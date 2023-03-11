@@ -11,7 +11,11 @@ def calculate(lhs, rhs, operation):
     elif operation == "div":
         return lhs / rhs
 
+#------------------------------------------------------------
+
 print("Hello World")
+
+#------------------------------------------------------------
 
 lhs_num = input("Введите первое число: ")
 
@@ -24,3 +28,9 @@ lhs_num = int(lhs_num)
 rhs_num = int(rhs_num)
 
 print(calculate(lhs_num, rhs_num, operation))
+
+#------------------------------------------------------------
+
+evens = [num for num in range(11) if num % 2 is 0]
+
+print(evens)
