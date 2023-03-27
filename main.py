@@ -107,8 +107,13 @@ def task2():
 
 
 def main():
-    task1()
-    task2()
+    task = input(print('Please, choose the task (1/2).'))
+
+    if task == 1:
+        task1()
+
+    if task == 2:
+        task2()
 
 
 if __name__ == "__main__":
