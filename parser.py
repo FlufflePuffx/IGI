@@ -1,40 +1,40 @@
 import re
-import patterns
+from patterns import *
 
 
-def find(pattern, text: str):
+def amount_of(pattern, text: str) -> int:
     return len(re.findall(pattern, text))
 
 
-def count_sentences(text):
-    sentences_amount = find(patterns.SENTENCES, text)
-    abbreviations_amount = find(patterns.ABBREVIATIONS, text)
-    doubled_abbreviations_amount = find(patterns.DOUBLED_ABBREVIATIONS, text) * 2
+def count_sentences(text) -> int:
+    sentences_amount = amount_of(SENTENCES, text)
+    abbreviations_amount = amount_of(ABBREVIATIONS, text)
+    doubled_abbreviations_amount = amount_of(DOUBLED_ABBREVIATIONS, text) * 2
 
     return sentences_amount - abbreviations_amount - doubled_abbreviations_amount
 
 
-def count_non_declarative_sentences(text):
-    return find(patterns.NON_DECLARATIVE_SENTENCES, text)
+def count_non_declarative_sentences(text) -> int:
+    return amount_of(NON_DECLARATIVE_SENTENCES, text)
 
 
 def average_sentence_length(text):
-    nums = re.findall(patterns.NUMBERS, text)
-    words = [word for word in re.findall(patterns.WORDS, text) if word not in nums]
+    nums = re.findall(NUMBERS, text)
+    words = [word for word in re.findall(WORDS, text) if word not in nums]
     words_len = sum(len(word) for word in words)
 
     return round(words_len / count_sentences(text), 2) if count_sentences(text) != 0 else 0
 
 
 def average_word_length(text):
-    nums = re.findall(patterns.NUMBERS, text)
-    words = list(word for word in re.findall(patterns.WORDS, text) if word not in nums)
+    nums = re.findall(NUMBERS, text)
+    words = list(word for word in re.findall(WORDS, text) if word not in nums)
     words_len = sum(len(word) for word in words)
     return round(words_len / len(words), 2) if len(words) != 0 else 0
 
 
 def top_k_repeated_n_grams(text: str, k=10, n=4):
-    words = re.findall(patterns.WORDS, text.lower())
+    words = re.findall(WORDS, text.lower())
     dictionary = {}
     for i in range(len(words) - n + 1):
         n_gram = ' '.join([str(word) for word in words[i:i + n]])
