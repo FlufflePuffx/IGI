@@ -1,10 +1,9 @@
 from django.http import HttpResponse, HttpResponseNotFound
 from django.shortcuts import render, redirect
 from django.contrib.auth import logout
-
-from django.template.backends import django
-
 from tours.models import *
+import requests
+import json
 
 
 class Image:
@@ -68,4 +67,73 @@ def show_post(request, tour_category):
 
 def logout_func(request):
     logout(request)
+    return redirect('home')
+
+
+# read
+def index(request):
+    tours = Tour.objects.all()
+    return render(request, "index.html", {"tours": tours})
+
+
+# create
+def create(request):
+    if request.method == "POST":
+        tour = Tour()
+        tour.title = request.POST.get("title")
+        tour.cost = request.POST.get("cost")
+        tour.description = request.POST.get("description")
+        tour.save()
+    return redirect('home')
+
+
+# update
+def edit(request, tour_id):
+    try:
+        tour = Tour.objects.get(id=tour_id)
+
+        if request.method == "POST":
+            tour.title = request.POST.get("title")
+            tour.cost = request.POST.get("cost")
+            tour.description = request.POST.get("description")
+            tour.save()
+            return redirect('home')
+        else:
+            return render(request, "edit.html", {"tours": tour})
+    except Tour.DoesNotExist:
+        return HttpResponseNotFound("<h2>Tour not found</h2>")
+
+
+# delete
+def delete(request, tour_id):
+    try:
+        tour = Tour.objects.get(id=tour_id)
+        tour.delete()
+        return redirect('home')
+    except Tour.DoesNotExist:
+        return HttpResponseNotFound("<h2>Tour not found</h2>")
+
+
+def weather_api_test(request):
+    appid = 'a2a6245cef875d740c11f8d31abacfb8'
+    url = f'https://samples.openweathermap.org/data/2.5/forecast/daily?id=524901&lang=us&appid={appid}'
+    response = requests.get(url)
+    weatherdata = response.json()
+    print("JSON Response :", weatherdata)
+    return redirect('home')
+
+
+def jokes(f):
+    data = requests.get(f)
+    tt = json.loads(data.text)
+    return tt
+
+
+def jokes_api_test(request):
+    f = r"https://official-joke-api.appspot.com/random_ten"
+    a = jokes(f)
+    for i in a:
+        print(i["type"])
+        print(i["setup"])
+        print(i["punchline"], "\n")
     return redirect('home')

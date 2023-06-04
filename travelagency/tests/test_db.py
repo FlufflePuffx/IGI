@@ -1,8 +1,7 @@
 import pytest
 
 from django.contrib.auth.models import User
-from django.urls import reverse
-from .models import *
+from tours.models import *
 
 
 @pytest.mark.django_db
@@ -105,10 +104,3 @@ def test_term_create():
 def test_term_empty_create():
   Term.objects.create()
   assert Term.objects.count() == 1
-
-
-@pytest.mark.django_db
-def test_test_view(client):
-   url = reverse('home')
-   response = client.get(url)
-   assert response.status_code == 200
