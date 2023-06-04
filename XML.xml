@@ -1,0 +1,1 @@
+{1: {"<class 'int'>": 2}, '3': {"<class 'list'>": [{"<class 'int'>": 4}, {"<class 'int'>": -5}, {"<class 'int'>": -6}, {"<class 'str'>": "something {([smth])} '''something"}]}, 7: {6: {"<class 'str'>": '8'}, 9: {10: {'None': 'None'}, 'None': {"<class 'tuple'>": [{"<class 'bool'>": True}, {"<class 'bool'>": False}]}}}}
