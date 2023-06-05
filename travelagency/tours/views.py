@@ -4,6 +4,8 @@ from django.contrib.auth import logout
 from tours.models import *
 import requests
 import json
+import bored_api
+import asyncio
 
 
 class Image:
@@ -119,21 +121,48 @@ def weather_api_test(request):
     url = f'https://samples.openweathermap.org/data/2.5/forecast/daily?id=524901&lang=us&appid={appid}'
     response = requests.get(url)
     weatherdata = response.json()
-    print("JSON Response :", weatherdata)
-    return redirect('home')
+    # print("JSON Response :", weatherdata)
+    context = {
+        'data': weatherdata,
+        'api_title': 'Weather Api'
+    }
+    return render(request, 'tours/api-test.html', context=context)
+
+
+async def get_activity():
+  client = bored_api.BoredClient()
+  activity = await client.get_by_type(bored_api.ActivityType.BUSYWORK)
+  return activity.activity
+
+
+def bored_api_test(request):
+
+    data = asyncio.run(get_activity())
+    context = {
+        'data': data,
+        'api_title': 'Bored Api'
+    }
+    return render(request, 'tours/api-test.html', context=context)
 
 
 def jokes(f):
+
     data = requests.get(f)
     tt = json.loads(data.text)
     return tt
 
 
 def jokes_api_test(request):
+
     f = r"https://official-joke-api.appspot.com/random_ten"
     a = jokes(f)
+    data = ''
     for i in a:
         print(i["type"])
         print(i["setup"])
-        print(i["punchline"], "\n")
-    return redirect('home')
+        data = i["punchline"]
+    context = {
+        'data': data,
+        'api_title': 'Jokes Api'
+    }
+    return render(request, 'tours/api-test.html', context=context)

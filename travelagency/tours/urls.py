@@ -10,6 +10,6 @@ urlpatterns = [
     path('category/<slug:tour_category>/', show_post, name='category'),
     path('/admin/logout/', logout_func, name='logout'),
     path('/admin/', admin.site.urls, name='admin_panel'),
-    path('weather/', weather_api_test),
-    path('jokes/', jokes_api_test)
+    path('bored/', bored_api_test),
+    path('jokes/', jokes_api_test),
 ]
